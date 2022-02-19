@@ -40,29 +40,29 @@ playerImg = pygame.transform.scale(playerImg_test, (100,100))
 
 playerX = 350
 playerY = 490
-playerX_change = 0
+playerX_c = 0
 
 # Enemy
 enemyImg = []
 enemyX = []
 enemyY = []
-enemyX_change = []
-enemyY_change = []
+enemyX_c = []
+enemyY_c = []
 enemies_num = 5
 
 for i in range(enemies_num):
     enemyImg.append(pygame.image.load('Images//enemy.png'))
     enemyX.append(random.randint(0, 750))
     enemyY.append(random.randint(50, 150))
-    enemyX_change.append(4)
-    enemyY_change.append(40)
+    enemyX_c.append(4)
+    enemyY_c.append(40)
 
 # Bullet
 bulletImg = pygame.image.load('Images//bullet.png')
 bulletX = 0
 bulletY = 480
-bulletX_change = 0
-bulletY_change = 10
+bulletX_c = 0
+bulletY_c = 10
 bullet_state = "READY"
 
 # Score
@@ -122,9 +122,9 @@ while running:
         # Movement
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                playerX_change = -2
+                playerX_c = -2
             if event.key == pygame.K_d:
-                playerX_change = 2
+                playerX_c = 2
             if event.key == pygame.K_SPACE:
                 if bullet_state is "READY":
                     # Location of ship
@@ -133,10 +133,10 @@ while running:
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
-                playerX_change = 0
+                playerX_c = 0
 
 
-    playerX += playerX_change
+    playerX += playerX_c
     if playerX <= 0:
         playerX = 0
     elif playerX >= 750:
@@ -152,13 +152,13 @@ while running:
             game_over()
             break
 
-        enemyX[i] += enemyX_change[i]
+        enemyX[i] += enemyX_c[i]
         if enemyX[i] <= 0:
-            enemyX_change[i] = 1
-            enemyY[i] += enemyY_change[i]
+            enemyX_c[i] = 1
+            enemyY[i] += enemyY_c[i]
         elif enemyX[i] >= 736:
-            enemyX_change[i] = -1
-            enemyY[i] += enemyY_change[i]
+            enemyX_c[i] = -1
+            enemyY[i] += enemyY_c[i]
 
         # Collision
         collision = Collision(enemyX[i], enemyY[i], bulletX, bulletY)
@@ -178,7 +178,7 @@ while running:
 
     if bullet_state is "FIRE":
         bullet(bulletX, bulletY)
-        bulletY -= bulletY_change
+        bulletY -= bulletY_c
 
     player(playerX, playerY)
     score(textX, testY)
