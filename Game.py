@@ -67,7 +67,7 @@ bullet_state = "READY"
 
 # Score
 
-score_value = 0
+score_val = 0
 font = pygame.font.Font('freesansbold.ttf', 30)
 
 textX = 10
@@ -77,8 +77,8 @@ testY = 10
 over_font = pygame.font.Font('freesansbold.ttf', 70)
 
 
-def show_score(x, y):
-    score = font.render("SCORE : " + str(score_value), True, (255, 255, 255))
+def score(x, y):
+    score = font.render("SCORE : " + str(score_val), True, (255, 255, 255))
     screen.blit(score, (x, y))
 
 
@@ -95,13 +95,13 @@ def enemy(x, y, i):
     screen.blit(enemyImg[i], (x, y))
 
 
-def fire_bullet(x, y):
+def bullet(x, y):
     global bullet_state
     bullet_state = "FIRE"
     screen.blit(bulletImg, (x + 5, y + 2))
 
 
-def isCollision(enemyX, enemyY, bulletX, bulletY):
+def Collision(enemyX, enemyY, bulletX, bulletY):
     distance = math.sqrt(math.pow(enemyX - bulletX, 2) + (math.pow(enemyY - bulletY, 2)))
     if distance < 27:
         return True
@@ -129,7 +129,7 @@ while running:
                 if bullet_state is "READY":
                     # Location of ship
                     bulletX = playerX
-                    fire_bullet(bulletX, bulletY)
+                    bullet(bulletX, bulletY)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -161,11 +161,11 @@ while running:
             enemyY[i] += enemyY_change[i]
 
         # Collision
-        collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
+        collision = Collision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
             bulletY = 480
             bullet_state = "READY"
-            score_value += 1
+            score_val += 1
             enemyX[i] = random.randint(0, 750)
             enemyY[i] = random.randint(50, 150)
 
@@ -177,9 +177,9 @@ while running:
         bullet_state = "READY"
 
     if bullet_state is "FIRE":
-        fire_bullet(bulletX, bulletY)
+        bullet(bulletX, bulletY)
         bulletY -= bulletY_change
 
     player(playerX, playerY)
-    show_score(textX, testY)
+    score(textX, testY)
     pygame.display.update()
